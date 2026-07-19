@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Gestión y Monitoreo IoT</title>
+
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- CSS de Leaflet para el Mapa -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+
+<body>
+
+    <!-- 1. BARRA SUPERIOR (Navbar completa como en la foto) -->
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-icon">IoT</span>
+            <h1>Plataforma de Gestión y Monitoreo Ambiental (ESP32)</h1>
+        </div>
+        <div class="navbar-actions">
+            <div class="notificacion">
+                <span class="badge">1</span>
+                🔔
+            </div>
+            <div class="usuario-perfil">👤</div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL SUBDIVIDIDO -->
+    <div class="app-container">
+
+        <!-- 2. BARRA LATERAL IZQUIERDA (Sidebar de navegación) -->
+        <aside class="sidebar">
+            <nav class="menu">
+                <a href="#" class="active"><span class="icon">📊</span> Dashboard</a>
+                <a href="#"><span class="icon">📈</span> Gráfico en línea</a>
+                <a href="#"><span class="icon">🎛️</span> Tarjetas de Red</a>
+                <a href="#"><span class="icon">🌡️</span> Valores actuales</a>
+                <a href="#"><span class="icon">📋</span> Tablas de datos</a>
+                <a href="#"><span class="icon">⚠️</span> Alertas Activas</a>
+            </nav>
+        </aside>
+
+        <!-- 3. ZONA DE CONTENIDO CENTRAL (Scrollable) -->
+        <main class="contenedor-contenido">
+
+            <!-- Fila de Tarjetas Principales -->
+            <section class="cards-actuales">
+                <article class="card">
+                    <h3>Temperatura Actual</h3>
+                    <p class="valor" id="card-temp">28.5 °C</p>
+                    <span class="estado normal">Normal</span>
+                </article>
+
+                <article class="card">
+                    <h3>Humedad Relativa</h3>
+                    <p class="valor" id="card-hum">72 %</p>
+                    <span class="estado medio">Media</span>
+                </article>
+
+                <article class="card">
+                    <h3>Presión Atmosférica</h3>
+                    <p class="valor">1012 hPa</p>
+                    <span class="estado normal">Estable</span>
+                </article>
+
+                <article class="card">
+                    <h3>Estado Servidor</h3>
+                    <p class="valor">Online</p>
+                    <span class="estado activo">Activo</span>
+                </article>
+            </section>
+
+            <!-- SECCIÓN TRIPLE: MAPA + PANEL DE DETALLES DERECHO -->
+            <section class="dashboard-map-grid">
+
+                <!-- Bloque del mapa -->
+                <div class="mapa-wrapper">
+                    <div class="mapa-header">
+                        <h2>Mapa de Dispositivos IoT Activos</h2>
+                    </div>
+                    <div id="map"></div>
+                </div>
+
+                <!-- Panel de detalles derecho (Igual al de la foto pero interactivo) -->
+                <div class="detalles-panel" id="panel-detalles">
+                    <div class="panel-header">
+                        <h2>DETALLES DE LA UBICACIÓN</h2>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="detalle-grupo">
+                            <label>DISPOSITIVO SELECCIONADO:</label>
+                            <p class="dinamico" id="det-dispositivo">ESP32-01</p>
+                        </div>
+
+                        <div class="detalle-grupo">
+                            <label>UBICACIÓN:</label>
+                            <p class="dinamico" id="det-ubicacion">Quito, Ecuador</p>
+                        </div>
+
+                        <div class="detalle-grupo">
+                            <label>PROVEEDOR / NODO:</label>
+                            <p class="dinamico" id="det-nodo">Red Nacional - Nodo Central</p>
+                        </div>
+
+                        <div class="detalle-grupo">
+                            <label>SENSORES DISPONIBLES:</label>
+                            <ul class="lista-sensores">
+                                <li>• Temperatura (DHT22)</li>
+                                <li>• Humedad (DHT22)</li>
+                                <li>• Presión (BMP280)</li>
+                            </ul>
+                        </div>
+
+                        <!-- Integración de tus Valores Históricos dentro del panel -->
+                        <div class="panel-historicos">
+                            <h3>Histórico del Nodo</h3>
+                            <div class="mini-historial">
+                                <div><small>Máx Registro:</small> <span id="det-max">32.1 °C</span></div>
+                                <div><small>Mín Registro:</small> <span id="det-min">22.4 °C</span></div>
+                                <div><small>Última Lectura:</small> <span>Hace 2 min</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 4. TABLA DE DATOS INFERIOR -->
+            <section class="seccion-tabla">
+                <div class="tabla-header">
+                    <h2>TABLA DE DISPOSITIVOS IoT (REGISTROS)</h2>
+                </div>
+                <div class="tabla-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Dispositivo</th>
+                                <th>Temperatura</th>
+                                <th>Humedad</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                onclick="seleccionarDispositivo('ESP32-01', 'Quito, Ecuador', 'Red Nacional - Nodo Central', '28.5 °C', '72 %', '32.1 °C', '22.4 °C', [-0.1807, -78.4678])">
+                                <td>08/07/2026</td>
+                                <td>09:00</td>
+                                <td>ESP32-01</td>
+                                <td>28.5 °C</td>
+                                <td>72 %</td>
+                                <td><span class="estado activo">Activo</span></td>
+                            </tr>
+                            <tr
+                                onclick="seleccionarDispositivo('ESP32-02', 'Quevedo, Ecuador', 'Estación Agrícola Sub-Nodo 2', '31.2 °C', '80 %', '34.5 °C', '25.1 °C', [-1.0225, -79.4601])">
+                                <td>08/07/2026</td>
+                                <td>08:00</td>
+                                <td>ESP32-02</td>
+                                <td>31.2 °C</td>
+                                <td>80 %</td>
+                                <td><span class="estado medio">Revisar</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>
+        <p>Aplicaciones Telemáticas Basadas en Web - Dashboard IoT Avanzado</p>
+    </footer>
+
+    <!-- Scripts de funcionamiento del mapa -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Inicializar mapa en Ecuador
+        const map = L.map('map').setView([-0.1807, -78.4678], 7);
+
+        // Capa de mapa oscura estilo premium
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap &copy; CARTO'
+        }).addTo(map);
+
+        // Datos de los dispositivos para mapear clics
+        const nodos = {
+            'ESP32-01': {
+                ubicacion: 'Quito, Ecuador',
+                nodo: 'Red Nacional - Nodo Central',
+                temp: '28.5 °C',
+                hum: '72 %',
+                max: '32.1 °C',
+                min: '22.4 °C',
+                coords: [-0.1807, -78.4678]
+            },
+            'ESP32-02': {
+                ubicacion: 'Quevedo, Ecuador',
+                nodo: 'Estación Agrícola Sub-Nodo 2',
+                temp: '31.2 °C',
+                hum: '80 %',
+                max: '34.5 °C',
+                min: '25.1 °C',
+                coords: [-1.0225, -79.4601]
+            }
+        };
+
+        // Crear marcadores y configurar eventos de clic
+        Object.keys(nodos).forEach(key => {
+            const n = nodos[key];
+            const marker = L.marker(n.coords).addTo(map);
+            marker.bindPopup(`<b>${key}</b><br>${n.ubicacion}`);
+
+            marker.on('click', () => {
+                seleccionarDispositivo(key, n.ubicacion, n.nodo, n.temp, n.hum, n.max, n.min, n.coords);
+            });
+        });
+
+        // Función interactiva para actualizar el panel derecho dinámicamente
+        function seleccionarDispositivo(id, ubicacion, nodo, temp, hum, max, min, coords) {
+            // Actualizar textos del panel derecho
+            document.getElementById('det-dispositivo').innerText = id;
+            document.getElementById('det-ubicacion').innerText = ubicacion;
+            document.getElementById('det-nodo').innerText = nodo;
+            document.getElementById('det-max').innerText = max;
+            document.getElementById('det-min').innerText = min;
+
+            // Actualizar también las tarjetas superiores para hacer juego
+            document.getElementById('card-temp').innerText = temp;
+            document.getElementById('card-hum').innerText = hum;
+
+            // Hacer paneo suave en el mapa hacia el dispositivo
+            map.panTo(coords);
+        }
+    </script>
+</body>
+
+</html>
