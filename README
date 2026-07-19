@@ -1,0 +1,37 @@
+# 📊 Plataforma de Gestión y Monitoreo Ambiental IoT
+
+¡Bienvenido/a al **Dashboard IoT Avanzado**! Esta es una aplicación web interactiva diseñada para la visualización, monitoreo y gestión en tiempo real de variables ambientales provenientes de dispositivos/nodos basados en **ESP32** (o simulados mediante Wokwi).
+
+El sistema cuenta con una interfaz **Dark Tech Premium** de alta fidelidad que organiza la información de manera intuitiva y dinámica a través de mapas interactivos, paneles de control y tablas históricas.
+
+---
+
+## 🚀 Características Principales
+
+*   **Interfaz Premium en Modo Oscuro:** Diseño moderno optimizado con tipografías limpias (`Inter`), efectos de elevación táctil y un esquema visual de estilo cibernético.
+*   **Mapa Interactivo Integrado:** Uso de la librería **Leaflet.js** con capas oscuras personalizadas (*CartoDB Dark Matter*) para geolocalizar los nodos en tiempo real.
+*   **Sincronización Dinámica de Datos (Reactividad Vanilla):** Al hacer clic en un marcador del mapa o en una fila de la tabla, el **Panel de Detalles Derecho** y las **Tarjetas Principales** se actualizan automáticamente con los datos del dispositivo seleccionado.
+*   **Sección de Históricos y KPIs:** Tarjetas de control rápido que muestran máximos, mínimos y estados actuales de los sensores (Temperatura, Humedad y Presión).
+*   **Diseño 100% Responsivo:** Adaptabilidad total para visualizar correctamente el panel en computadoras de escritorio, tablets y dispositivos móviles.
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+Para garantizar un rendimiento óptimo y una carga ultrarrápida, el proyecto fue construido utilizando tecnologías web nativas, **sin frameworks pesados**:
+
+*   **HTML5:** Estructura semántica avanzada para la correcta organización del contenido.
+*   **CSS3 (Custom Variables, Flexbox y Grid):** Estilos modernos estructurados mediante variables globales para facilitar el mantenimiento y cambios de color rápidos.
+*   **JavaScript (Vanilla JS):** Lógica nativa para la manipulación del DOM, eventos dinámicos e interactividad entre componentes.
+*   **Leaflet.js API:** Librería de código abierto para mapas interactivos móviles y ligeros.
+
+---
+
+## 📂 Estructura del Proyecto
+
+El repositorio está organizado de forma limpia y modular:
+
+```text
+├── index.html        # Estructura de la aplicación, scripts del mapa y lógica interactiva.
+├── styles.css        # Variables globales, estilos CSS Grid/Flexbox y diseño responsivo.
+└── README.md         # Documentación general del proyecto (este archivo).
